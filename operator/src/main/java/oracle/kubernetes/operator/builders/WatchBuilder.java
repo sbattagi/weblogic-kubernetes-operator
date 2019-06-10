@@ -9,20 +9,23 @@ import io.kubernetes.client.ApiClient;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.apis.BatchV1Api;
 import io.kubernetes.client.apis.CoreV1Api;
+import io.kubernetes.client.apis.CustomObjectsApi;
 import io.kubernetes.client.models.V1ConfigMap;
 import io.kubernetes.client.models.V1Event;
 import io.kubernetes.client.models.V1Job;
 import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.models.V1Service;
+import io.kubernetes.client.models.V1beta1CustomResourceDefinition;
 import io.kubernetes.client.util.Watch;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.concurrent.TimeUnit;
-import java.util.function.BiFunction;
 import oracle.kubernetes.operator.helpers.ClientPool;
 import oracle.kubernetes.operator.helpers.Pool;
 import oracle.kubernetes.weblogic.domain.api.WeblogicApi;
 import oracle.kubernetes.weblogic.domain.model.Domain;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.concurrent.TimeUnit;
+import java.util.function.BiFunction;
 
 public class WatchBuilder {
   /** Always true for watches. */
@@ -294,6 +297,32 @@ public class WatchBuilder {
       }
     }
   }
+
+  /**
+   * Creates a web hook object to track changes to superdomain model objects in one namespaces.
+   *
+   * @param namespace the namespace in which to track the superdomain model
+   * @return the active web hook
+   * @throws ApiException if there is an error on the call that sets up the web hook.
+   */
+  public WatchI<Domain> createSuperDomainModelWatch(String namespace) throws ApiException {
+    return FACTORY.createWatch(
+        ClientPool.getInstance(), callParams, V1beta1CustomResourceDefinition.class, new ListDomainsCall(namespace));
+  }
+
+  private class ListNamespacedCustomerResourceDefinitionCall implements  BiFunction<ApiClient, CallParams, Call> {
+    private String namespace;
+
+    @Override
+    public Call apply(ApiClient client, CallParams callParams) {
+      // Ensure that client doesn't time out before call or watch
+      client.getHttpClient().setReadTimeout(getSocketTimeout(callParams), TimeUnit.SECONDS);
+
+      return new V1BetaApi()
+          .listcus
+    }
+  }
+
 
   /**
    * Creates a web hook object to track config map calls.

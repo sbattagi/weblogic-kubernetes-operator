@@ -27,7 +27,7 @@ import oracle.kubernetes.operator.watcher.WatchListener;
  *
  * @param <T> The type of the object to be watched.
  */
-abstract class Watcher<T> {
+public abstract class Watcher<T> {
   static final String HAS_NEXT_EXCEPTION_MESSAGE = "IO Exception during hasNext method.";
   private static final LoggingFacade LOGGER = LoggingFactory.getLogger("Operator", "Operator");
   private static final long IGNORED_RESOURCE_VERSION = 0;
@@ -63,7 +63,7 @@ abstract class Watcher<T> {
    * @param stopping an atomic boolean to watch to determine when to stop the watcher
    * @param listener a listener to which to dispatch watch events
    */
-  Watcher(
+  public Watcher(
       String resourceVersion,
       WatchTuning tuning,
       AtomicBoolean stopping,
