@@ -278,6 +278,7 @@ elif [ "$JENKINS" = "true" ]; then
   clean_jenkins
 
   setup_jenkins
+  echo "KUBECONFIG $KUBECONFIG"
 
   /usr/local/packages/aime/ias/run_as_root "mkdir -p $PV_ROOT"
   /usr/local/packages/aime/ias/run_as_root "mkdir -p $RESULT_ROOT"

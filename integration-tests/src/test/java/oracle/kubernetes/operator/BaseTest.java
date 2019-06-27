@@ -238,6 +238,7 @@ public class BaseTest {
         "Env var IMAGE_PULL_SECRET_WEBLOGIC " + System.getenv("IMAGE_PULL_SECRET_WEBLOGIC"));
     logger.info("Env var IMAGE_NAME_WEBLOGIC " + System.getenv("IMAGE_NAME_WEBLOGIC"));
     logger.info("Env var IMAGE_TAG_WEBLOGIC " + System.getenv("IMAGE_TAG_WEBLOGIC"));
+    logger.info("Env var KUBECONFIG " + System.getenv("KUBECONFIG"));
 
     logger.info("Env var BRANCH_NAME " + System.getenv("BRANCH_NAME"));
   }
