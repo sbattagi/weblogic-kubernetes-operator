@@ -14,10 +14,10 @@ function setup_jenkins {
 #	  echo "k8s installation is not successful"
 #	  exit 1
 #  fi
-#  set +x
-#  . ~/.dockerk8senv
-#  set -x
-#  id
+  set +x
+  . ~/.dockerk8senv
+  set -x
+  id
 
   docker images
 
