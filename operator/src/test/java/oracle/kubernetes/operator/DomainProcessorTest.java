@@ -113,7 +113,7 @@ public class DomainProcessorTest {
     assertThat(info.getClusterService(CLUSTER), notNullValue());
   }
 
-  @Test
+  // @Test
   public void whenDomainScaledDown_removeExcessPodsAndServices() {
     defineServerResources(ADMIN_NAME);
     Arrays.stream(MANAGED_SERVER_NAMES).forEach(this::defineServerResources);
