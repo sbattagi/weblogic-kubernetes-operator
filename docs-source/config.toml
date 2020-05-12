@@ -1,6 +1,6 @@
-baseURL = "/weblogic-kubernetes-operator/"
+baseURL = "/fmw-kubernetes/"
 languageCode = "en-us"
-title = "WebLogic Kubernetes Operator"
+title = "Oracle Fusion Middleware on Kubernetes"
 
 # Change the default theme to be use when building the site with Hugo
 theme = "hugo-theme-learn"

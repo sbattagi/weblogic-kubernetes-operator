@@ -16,7 +16,7 @@ spec:
     app.kubernetes.io/instance: dev
     app.kubernetes.io/name: oracle-db
   sessionAffinity: None
-  type: LoadBalancer
+  type: NodePort
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment

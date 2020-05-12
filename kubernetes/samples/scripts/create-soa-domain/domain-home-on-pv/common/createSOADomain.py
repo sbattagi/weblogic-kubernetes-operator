@@ -6,7 +6,7 @@ import sys
 
 import com.oracle.cie.domain.script.jython.WLSTException as WLSTException
 
-class SOA12213Provisioner:
+class SOA12214Provisioner:
 
     jrfDone = 0;
     MACHINES = {
@@ -25,7 +25,7 @@ class SOA12213Provisioner:
     ADDL_MANAGED_SERVER_PORT = 9001
 
 
-    JRF_12213_TEMPLATES = {
+    JRF_12214_TEMPLATES = {
         'baseTemplate' : '@@ORACLE_HOME@@/wlserver/common/templates/wls/wls.jar',
         'extensionTemplates' : [
             '@@ORACLE_HOME@@/oracle_common/common/templates/wls/oracle.jrf_template.jar',
@@ -37,30 +37,30 @@ class SOA12213Provisioner:
         'serverGroupsToTarget' : [ 'JRF-MAN-SVR', 'WSMPM-MAN-SVR' ]
     }
 
-    SOA_12213_TEMPLATES = {
+    SOA_12214_TEMPLATES = {
         'extensionTemplates' : [
-            '@@ORACLE_HOME@@/soa/common/templates/wls/oracle.soa_template.jar'
+            '@@ORACLE_HOME@@/soa/common/templates/wls/oracle.soa.refconfig_template.jar'
         ],
         'serverGroupsToTarget' : [ 'SOA-MGD-SVRS-ONLY' ]
     }
 
-    SOA_ESS_12213_TEMPLATES = {
+    SOA_ESS_12214_TEMPLATES = {
         'extensionTemplates' : [
-            '@@ORACLE_HOME@@/soa/common/templates/wls/oracle.soa_template.jar',
+            '@@ORACLE_HOME@@/soa/common/templates/wls/oracle.soa.refconfig_template.jar',
             '@@ORACLE_HOME@@/oracle_common/common/templates/wls/oracle.ess.basic_template.jar',
             '@@ORACLE_HOME@@/em/common/templates/wls/oracle.em_ess_template.jar'
         ],
         'serverGroupsToTarget' : [ 'SOA-MGD-SVRS', 'ESS-MGD-SVRS' ]
     }
 
-    OSB_12213_TEMPLATES = {
+    OSB_12214_TEMPLATES = {
         'extensionTemplates' : [
-            '@@ORACLE_HOME@@/osb/common/templates/wls/oracle.osb_template.jar'
+            '@@ORACLE_HOME@@/osb/common/templates/wls/oracle.osb.refconfig_template.jar'
         ],
         'serverGroupsToTarget' : [ 'OSB-MGD-SVRS-ONLY' ]
     }
 
-    BPM_12213_TEMPLATES = {
+    BPM_12214_TEMPLATES = {
         'extensionTemplates' : [
             '@@ORACLE_HOME@@/soa/common/templates/wls/oracle.bpm_template.jar'
         ],
@@ -110,7 +110,7 @@ class SOA12213Provisioner:
         return ms_servers
 
     def createBaseDomain(self, domainName, user, password, adminListenPort, adminName, managedNameBase, managedServerPort, prodMode, managedCount, clusterName, domainType):
-        baseTemplate = self.replaceTokens(self.JRF_12213_TEMPLATES['baseTemplate'])
+        baseTemplate = self.replaceTokens(self.JRF_12214_TEMPLATES['baseTemplate'])
 
         readTemplate(baseTemplate)
         setOption('DomainName', domainName)
@@ -201,31 +201,31 @@ class SOA12213Provisioner:
 
     def applyJRFTemplates(self):
         print 'Applying JRF templates...'
-        for extensionTemplate in self.JRF_12213_TEMPLATES['extensionTemplates']:
+        for extensionTemplate in self.JRF_12214_TEMPLATES['extensionTemplates']:
             addTemplate(self.replaceTokens(extensionTemplate))
         return
 
     def applySOATemplates(self):
         print 'Applying SOA templates...'
-        for extensionTemplate in self.SOA_12213_TEMPLATES['extensionTemplates']:
+        for extensionTemplate in self.SOA_12214_TEMPLATES['extensionTemplates']:
             addTemplate(self.replaceTokens(extensionTemplate))
         return
 
     def applySOAESSTemplates(self):
         print 'Applying SOA+ESS templates...'
-        for extensionTemplate in self.SOA_ESS_12213_TEMPLATES['extensionTemplates']:
+        for extensionTemplate in self.SOA_ESS_12214_TEMPLATES['extensionTemplates']:
             addTemplate(self.replaceTokens(extensionTemplate))
         return
 
     def applyOSBTemplates(self):
         print 'Applying OSB templates...'
-        for extensionTemplate in self.OSB_12213_TEMPLATES['extensionTemplates']:
+        for extensionTemplate in self.OSB_12214_TEMPLATES['extensionTemplates']:
             addTemplate(self.replaceTokens(extensionTemplate))
         return
 
     def applyBPMTemplates(self):
         print 'Applying BPM templates...'
-        for extensionTemplate in self.BPM_12213_TEMPLATES['extensionTemplates']:
+        for extensionTemplate in self.BPM_12214_TEMPLATES['extensionTemplates']:
             addTemplate(self.replaceTokens(extensionTemplate))
         return
 
@@ -328,8 +328,8 @@ class SOA12213Provisioner:
         self.configureXADataSources()
 
         print 'Targeting Server Groups...'
-        serverGroupsToTarget = list(self.JRF_12213_TEMPLATES['serverGroupsToTarget'])
-        serverGroupsToTarget.extend(self.SOA_12213_TEMPLATES['serverGroupsToTarget'])
+        serverGroupsToTarget = list(self.JRF_12214_TEMPLATES['serverGroupsToTarget'])
+        serverGroupsToTarget.extend(self.SOA_12214_TEMPLATES['serverGroupsToTarget'])
         cd('/')
         self.targetSOAServers(serverGroupsToTarget)
 
@@ -367,8 +367,8 @@ class SOA12213Provisioner:
         self.configureXADataSources()
 
         print 'Targeting Server Groups...'
-        serverGroupsToTarget = list(self.JRF_12213_TEMPLATES['serverGroupsToTarget'])
-        serverGroupsToTarget.extend(self.SOA_ESS_12213_TEMPLATES['serverGroupsToTarget'])
+        serverGroupsToTarget = list(self.JRF_12214_TEMPLATES['serverGroupsToTarget'])
+        serverGroupsToTarget.extend(self.SOA_ESS_12214_TEMPLATES['serverGroupsToTarget'])
         cd('/')
         self.targetSOAESSServers(serverGroupsToTarget)
 
@@ -390,7 +390,7 @@ class SOA12213Provisioner:
         self.applyOSBTemplates()
         print 'Extension Templates added'
 
-        if 'osb_server1' not in self.ADDL_MANAGED_SERVERS:
+        if 'osb_server1' not in self.MANAGED_SERVERS and 'osb_server1' not in self.ADDL_MANAGED_SERVERS:
             print 'INFO: deleting osb_server1'
             cd('/')
             delete('osb_server1','Server')
@@ -405,8 +405,8 @@ class SOA12213Provisioner:
         set('DriverName', 'oracle.jdbc.xa.client.OracleXADataSource')
 
         print 'Targeting Server Groups...'
-        serverGroupsToTarget = list(self.JRF_12213_TEMPLATES['serverGroupsToTarget'])
-        serverGroupsToTarget.extend(self.OSB_12213_TEMPLATES['serverGroupsToTarget'])
+        serverGroupsToTarget = list(self.JRF_12214_TEMPLATES['serverGroupsToTarget'])
+        serverGroupsToTarget.extend(self.OSB_12214_TEMPLATES['serverGroupsToTarget'])
         if domainType == "osb" :
             cd('/')
             self.targetOSBServers(serverGroupsToTarget, self.MANAGED_SERVERS)
@@ -445,8 +445,8 @@ class SOA12213Provisioner:
         self.configureXADataSources()
 
         print 'Targeting Server Groups...'
-        serverGroupsToTarget = list(self.JRF_12213_TEMPLATES['serverGroupsToTarget'])
-        serverGroupsToTarget.extend(self.BPM_12213_TEMPLATES['serverGroupsToTarget'])
+        serverGroupsToTarget = list(self.JRF_12214_TEMPLATES['serverGroupsToTarget'])
+        serverGroupsToTarget.extend(self.BPM_12214_TEMPLATES['serverGroupsToTarget'])
         cd('/')
         self.targetSOAServers(serverGroupsToTarget)
 
@@ -619,5 +619,5 @@ while i < len(sys.argv):
         usage()
         sys.exit(1)
 
-provisioner = SOA12213Provisioner(oracleHome, javaHome, domainParentDir, adminListenPort, adminName, managedNameBase, managedServerPort, prodMode, managedCount, clusterName)
+provisioner = SOA12214Provisioner(oracleHome, javaHome, domainParentDir, adminListenPort, adminName, managedNameBase, managedServerPort, prodMode, managedCount, clusterName)
 provisioner.createSOADomain(domainName, domainUser, domainPassword, rcuDb, rcuSchemaPrefix, rcuSchemaPassword, adminListenPort, adminName, managedNameBase, managedServerPort, prodMode, managedCount, clusterName, domainType, exposeAdminT3Channel, t3ChannelPublicAddress, t3ChannelPort)
