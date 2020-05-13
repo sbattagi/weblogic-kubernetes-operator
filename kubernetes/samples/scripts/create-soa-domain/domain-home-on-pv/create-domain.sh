@@ -163,7 +163,7 @@ function createDomainConfigmap {
   fi
  
   # create the configmap and label it properly
-  local cmName=${domainUID}-create-fmw-infra-sample-domain-job-cm
+  local cmName=${domainUID}-create-soa-infra-domain-job-cm
   kubectl create configmap ${cmName} -n $namespace --from-file $externalFilesTmpDir --dry-run -o yaml | kubectl apply -f -
 
   echo Checking the configmap $cmName was created
@@ -186,7 +186,7 @@ function createDomainHome {
   createDomainConfigmap
 
   # There is no way to re-run a kubernetes job, so first delete any prior job
-  CONTAINER_NAME="create-fmw-infra-sample-domain-job"
+  CONTAINER_NAME="create-soa-infra-domain-job"
   JOB_NAME="${domainUID}-${CONTAINER_NAME}"
   deleteK8sObj job $JOB_NAME ${createJobOutput}
 
